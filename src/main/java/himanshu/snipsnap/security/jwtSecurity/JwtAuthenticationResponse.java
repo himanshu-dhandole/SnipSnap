@@ -1,4 +1,4 @@
-package himanshu.snipsnap.security;
+package himanshu.snipsnap.security.jwtSecurity;
 
 
 import lombok.Data;
