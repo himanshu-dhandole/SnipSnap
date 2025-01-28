@@ -7,8 +7,8 @@ import himanshu.snipsnap.models.Users;
 import himanshu.snipsnap.repository.UrlMappingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -22,8 +22,8 @@ public class UrlMappingService {
 
         String shortURL = generateShortURL() ;
         UrlMapping urlMapping = new UrlMapping();
-        urlMapping.setShortUrl(shortURL);
-        urlMapping.setOriginalUrl(originalURL);
+        urlMapping.setShortURL(shortURL);
+        urlMapping.setOriginalURL(originalURL);
         urlMapping.setUser(user);
         urlMapping.setCreatedDate(LocalDateTime.now());
 
@@ -37,10 +37,10 @@ public class UrlMappingService {
 
         UrlMappingDTO urlMappingDTO = new UrlMappingDTO();
         urlMappingDTO.setId(savedUrlMapping.getId());
-        urlMappingDTO.setOriginalURL(savedUrlMapping.getOriginalUrl());
-        urlMappingDTO.setShortURL(savedUrlMapping.getShortUrl());
+        urlMappingDTO.setOriginalURL(savedUrlMapping.getOriginalURL());
+        urlMappingDTO.setShortURL(savedUrlMapping.getShortURL());
         urlMappingDTO.setClickCount(savedUrlMapping.getClickCount());
-        urlMappingDTO.setCrearedDate(savedUrlMapping.getCreatedDate());
+        urlMappingDTO.setCreatedDate(savedUrlMapping.getCreatedDate());
         urlMappingDTO.setName(savedUrlMapping.getUser().getName());
         return urlMappingDTO ;
     }
@@ -57,5 +57,11 @@ public class UrlMappingService {
         }
 
         return shortUrl.toString() ;
+    }
+
+    public List<UrlMappingDTO> getAllUrl(Users user) {
+       return urlMappingRepository.findByUser(user).stream()
+               .map(this::UrlMappingDtoWrapper)
+               .toList();
     }
 }

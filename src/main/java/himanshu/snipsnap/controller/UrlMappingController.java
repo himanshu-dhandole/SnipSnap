@@ -8,17 +8,18 @@ import himanshu.snipsnap.service.UrlMappingService;
 import himanshu.snipsnap.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/url")
+@PreAuthorize("isAuthenticated()")
 public class UrlMappingController {
 
     private final UserService userService;
@@ -34,4 +35,14 @@ public class UrlMappingController {
         UrlMappingDTO urlMappingDTO = urlMappingService.createShortURL(originalURL, user);
         return ResponseEntity.ok(urlMappingDTO) ;
     }
+
+    @GetMapping("/getAllUrl")
+    public ResponseEntity<List<UrlMappingDTO>> getAllUrl(Principal principal) {
+        Users user = userService.findByName(principal.getName()) ;
+        List<UrlMappingDTO> urls = urlMappingService.getAllUrl(user) ;
+        return ResponseEntity.ok(urls) ;
+    }
+
+
+
 }

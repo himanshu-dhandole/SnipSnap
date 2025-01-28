@@ -1,9 +1,11 @@
 package himanshu.snipsnap.DTO;
 
 
+import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
 public class UrlRequestDTO {
-    private String OriginalURL;
+    @Column(nullable = false)
+    private String originalURL;
 }

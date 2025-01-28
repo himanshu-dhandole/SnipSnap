@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Data
 public class UrlMappingDTO {
     private long id ;
-    private String originalURL ;
+    private String originalURL;
     private String shortURL ;
     private int clickCount ;
-    private LocalDateTime crearedDate  ;
+    private LocalDateTime createdDate  ;
     private String name ;
 }
