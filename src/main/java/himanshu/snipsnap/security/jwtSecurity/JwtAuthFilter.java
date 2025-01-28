@@ -15,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -48,9 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     // set authentication in the security context
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
