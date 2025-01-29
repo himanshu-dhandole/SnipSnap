@@ -9,10 +9,7 @@ import himanshu.snipsnap.models.Users;
 import himanshu.snipsnap.repository.ClickEventRepository;
 import himanshu.snipsnap.repository.UrlMappingRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
