@@ -15,4 +15,5 @@ public interface UrlMappingRepository extends JpaRepository<UrlMapping , Long> {
 
     public List<UrlMapping> findByUser(Users user);
 
+    Users user(Users user);
 }

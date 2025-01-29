@@ -11,9 +11,13 @@ import himanshu.snipsnap.repository.UrlMappingRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -23,7 +27,6 @@ import java.util.stream.Collectors;
 public class UrlMappingService {
 
     private final UrlMappingRepository urlMappingRepository;
-    private final ModelMapper modelMapper ;
     private final ClickEventRepository clickEventRepository;
 
 
@@ -78,7 +81,7 @@ public class UrlMappingService {
     public List<ClickEventDTO> getClickEventsByDate(String shortURL, LocalDateTime start, LocalDateTime end) {
         UrlMapping urlMapping = urlMappingRepository.findByShortURL(shortURL);
         if (urlMapping != null) {
-            return clickEventRepository.findUrlMappingAndClickDateBetween(urlMapping, start, end)
+            return clickEventRepository.findByUrlMappingAndClickDateBetween(urlMapping, start, end)
                     .stream()
                     .collect(Collectors.groupingBy(click -> click.getClickDate().toLocalDate(), Collectors.counting()))
                     .entrySet()
@@ -95,6 +98,12 @@ public class UrlMappingService {
     }
 
 
-
-
+    public Map<LocalDate, Long> totalClicksByUser(Users user, LocalDate start, LocalDate end) {
+        List<UrlMapping> urlMappings = urlMappingRepository.findByUser(user);
+        List<ClickEvents> clickEvents = clickEventRepository.findByUrlMappingInAndClickDateBetween(urlMappings, start.atStartOfDay(), end.plusDays(1).atStartOfDay());
+        return clickEvents.stream()
+                .collect(Collectors.groupingBy(click -> click
+                        .getClickDate()
+                        .toLocalDate(), Collectors.counting()));
+    }
 }

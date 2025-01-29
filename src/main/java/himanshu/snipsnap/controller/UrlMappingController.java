@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -61,6 +63,20 @@ public class UrlMappingController {
         return ResponseEntity.ok(clickEventDTOS) ;
     }
 
+
+    @GetMapping("/totalClicks")
+    public ResponseEntity<Map<LocalDate,Long>> totalClicks(Principal principal,
+                                                           @RequestParam String startDate,
+                                                           @RequestParam String endDate) {
+        Users user = userService.findByName(principal.getName()) ;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE ;
+        LocalDate start = LocalDate.parse(startDate,dateTimeFormatter);
+        LocalDate end = LocalDate.parse(endDate,dateTimeFormatter);
+        Map<LocalDate,Long> totalClicks = urlMappingService.totalClicksByUser(user , start , end);
+
+        return null ;
+
+    }
 
 
 }
